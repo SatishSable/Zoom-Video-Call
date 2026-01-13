@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Apna Video Call",
+  "version": "1.0.0",
+  "description": "Connect with your loved ones - Full stack video conferencing application",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "logo192.png",
+      "48": "logo192.png",
+      "128": "logo512.png"
+    }
+  },
+  "icons": {
+    "16": "logo192.png",
+    "48": "logo192.png",
+    "128": "logo512.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:8000/*",
+    "https://apnacollegebackend.onrender.com/*"
+  ]
+}
