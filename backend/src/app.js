@@ -14,6 +14,13 @@ import userRoutes from "./routes/users.routes.js";
 dotenv.config();
 
 const app = express();
+
+// Request Logger Middleware
+app.use((req, res, next) => {
+    console.log(`📡 ${req.method} request to ${req.url}`);
+    next();
+});
+
 const server = createServer(app);
 const io = connectToSocket(server);
 
@@ -24,7 +31,7 @@ app.set("port", (process.env.PORT || 8000))
 const corsOptions = {
     origin: process.env.NODE_ENV === 'production'
         ? [process.env.FRONTEND_URL, /\.netlify\.app$/, /\.vercel\.app$/]
-        : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+        : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'],
     credentials: true
 };
 
@@ -37,21 +44,21 @@ app.use("/api/v1/users", userRoutes);
 const start = async () => {
     app.set("mongo_user")
 
-    // Use environment variable for MongoDB connection
-    const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://imdigitalashish:imdigitalashish@cluster0.cujabk4.mongodb.net/";
+    // Use exact environment variable or provided string
+    const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://satishsable2004_db_user:3Y0FM7GBchIq2ZdQ@cluster0.labp0to.mongodb.net/";
 
     try {
         const connectionDb = await mongoose.connect(MONGODB_URI);
-        console.log(`✅ MONGO Connected to YOUR Database!`);
-        console.log(`📍 Database Host: ${connectionDb.connection.host}`);
-        console.log(`📊 Database Name: ${connectionDb.connection.name}`);
+        console.log(` MONGO Connected to YOUR Database!`);
+        console.log(` Database Host: ${connectionDb.connection.host}`);
+        console.log(` Database Name: ${connectionDb.connection.name}`);
     } catch (error) {
-        console.error("❌ MongoDB Connection Error:", error.message);
+        console.error(" MongoDB Connection Error:", error.message);
         process.exit(1);
     }
 
     server.listen(app.get("port"), () => {
-        console.log(`🚀 Server listening on PORT ${app.get("port")}`)
+        console.log(` Server listening on PORT ${app.get("port")}`)
     });
 }
 
