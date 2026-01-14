@@ -72,7 +72,7 @@ git push -u origin main
 4. **Configure Build:**
    - **Base directory:** `frontend`
    - **Build command:** `npm run build`
-   - **Publish directory:** `frontend/build`
+   - **Publish directory:** `build`
 
 5. **Environment Variables** (Site settings → Environment variables):
    ```
