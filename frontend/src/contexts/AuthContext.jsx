@@ -11,6 +11,7 @@ const client = axios.create({
     baseURL: `${server}/api/v1/users`
 })
 
+console.log("📍 Frontend is connecting to backend at:", server);
 
 export const AuthProvider = ({ children }) => {
 
@@ -34,6 +35,8 @@ export const AuthProvider = ({ children }) => {
             if (request.status === httpStatus.CREATED) {
                 return request.data.message;
             }
+
+            return request.data.message || "User Registered";
         } catch (err) {
             throw err;
         }
@@ -67,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             });
             return request.data
         } catch
-         (err) {
+        (err) {
             throw err;
         }
     }

@@ -34,9 +34,9 @@ export default function VideoMeetComponent() {
 
     let [audioAvailable, setAudioAvailable] = useState(true);
 
-    let [video, setVideo] = useState([]);
+    let [video, setVideo] = useState(true);
 
-    let [audio, setAudio] = useState();
+    let [audio, setAudio] = useState(true);
 
     let [screen, setScreen] = useState();
 
@@ -44,7 +44,7 @@ export default function VideoMeetComponent() {
 
     let [screenAvailable, setScreenAvailable] = useState();
 
-    let [messages, setMessages] = useState([])
+    let [messages, setMessages] = useState([]);
 
     let [message, setMessage] = useState("");
 
@@ -87,6 +87,8 @@ export default function VideoMeetComponent() {
             if (videoPermission) {
                 setVideoAvailable(true);
                 console.log('Video permission granted');
+                // Stop the test video track
+                videoPermission.getTracks().forEach(track => track.stop());
             } else {
                 setVideoAvailable(false);
                 console.log('Video permission denied');
@@ -96,6 +98,8 @@ export default function VideoMeetComponent() {
             if (audioPermission) {
                 setAudioAvailable(true);
                 console.log('Audio permission granted');
+                // Stop the test audio track
+                audioPermission.getTracks().forEach(track => track.stop());
             } else {
                 setAudioAvailable(false);
                 console.log('Audio permission denied');
@@ -107,8 +111,12 @@ export default function VideoMeetComponent() {
                 setScreenAvailable(false);
             }
 
-            if (videoAvailable || audioAvailable) {
-                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
+            // Use the actual permission results, not the state values
+            const hasVideo = videoPermission ? true : false;
+            const hasAudio = audioPermission ? true : false;
+
+            if (hasVideo || hasAudio) {
+                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: hasVideo, audio: hasAudio });
                 if (userMediaStream) {
                     window.localStream = userMediaStream;
                     if (localVideoref.current) {
@@ -439,7 +447,7 @@ export default function VideoMeetComponent() {
         // this.setState({ message: "", sender: username })
     }
 
-    
+
     let connect = () => {
         setAskForUsername(false);
         getMedia();
@@ -504,7 +512,7 @@ export default function VideoMeetComponent() {
                             {(video === true) ? <VideocamIcon /> : <VideocamOffIcon />}
                         </IconButton>
                         <IconButton onClick={handleEndCall} style={{ color: "red" }}>
-                            <CallEndIcon  />
+                            <CallEndIcon />
                         </IconButton>
                         <IconButton onClick={handleAudio} style={{ color: "white" }}>
                             {audio === true ? <MicIcon /> : <MicOffIcon />}
